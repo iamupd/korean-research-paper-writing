@@ -1,0 +1,12 @@
+{
+  "name": "korean-academic-paper-writing",
+  "displayName": "Korean Academic Paper Writing (한국어 논문체)",
+  "version": "1.0.0",
+  "description": "Writes, translates, and revises Korean academic papers (including AI-written drafts) in KCI-style academic register, with a corpus-calibrated style checker and statistics-reporting frames.",
+  "author": {
+    "name": "Min-Young Yu"
+  },
+  "repository": "https://github.com/iamupd/korean-academic-paper-writing",
+  "license": "MIT",
+  "keywords": ["korean", "academic-writing", "paper", "kci", "translationese", "style-checker", "skill"]
+}

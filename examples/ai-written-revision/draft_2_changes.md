@@ -1,7 +1,7 @@
 # draft_2_revised 수정 대응표
 
 - 대상: draft_2_ai_written.md(연구 메모로 바로 쓴 원고) → draft_2_revised.md
-- 기준: writing-korean-academic-papers 스킬(SKILL.md 문장 계약·장별 구성·담화 표지 대응표, reference/phrasebank.md)
+- 기준: writing-korean-research-papers 스킬(SKILL.md 문장 계약·장별 구성·담화 표지 대응표, reference/phrasebank.md)
 - 범위: 문체·문장 연결·시제·근거 강도·용어 병기·LLM 연관 어휘·번역투만 고침. 표 1, 표 주, 장·절 제목, 확정 필요 사항은 바꾸지 않음
 - 고친 이유 칸 앞의 [ ]는 원고 위치임
 

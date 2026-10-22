@@ -1,18 +1,18 @@
-# Korean Academic Paper Writing Skill for Claude Code
+# Korean Research Paper Writing Skill for Claude Code
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-D97757)](#quick-install)
-[![Reference papers](https://img.shields.io/badge/reference-11%20KCI%20papers-1f6feb)](#reference-papers)
+[![Reference papers](https://img.shields.io/badge/reference-36%20KCI%20papers-1f6feb)](#reference-papers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 English | [한국어](README.md)
 
-A Claude Code skill for writing and revising Korean academic papers. It matches sentence length, tense, sentence linking, term glossing, and statistics reporting to AI papers published in KCI-indexed Korean journals in 2024, and checks the finished draft against the same reference.
+A Claude Code skill for writing and revising Korean research papers in computing, engineering, and the natural sciences (experiments, measurements, simulations, and data analysis). It matches sentence length, tense, sentence linking, term glossing, and statistics reporting to 30 papers published in KCI-indexed Korean journals in 2024, grouped into six fields. It first identifies the field of the draft, then writes and checks it against that field's section structure and reference.
 
 **Install** (Claude Code CLI):
 
 ```bash
-claude plugin marketplace add iamupd/korean-academic-paper-writing
-claude plugin install korean-academic-paper-writing@korean-academic-paper-writing
+claude plugin marketplace add iamupd/korean-research-paper-writing
+claude plugin install korean-research-paper-writing@korean-research-paper-writing
 ```
 
 After installing, ask as you normally would, for example "translate this English draft into a Korean paper" or "revise this AI-written introduction in Korean academic style". To use the skill without the plugin system, see [Quick install](#quick-install).
@@ -21,7 +21,7 @@ After installing, ask as you normally would, for example "translate this English
 
 ### Why 2024 KCI papers?
 
-[Lee (2026, arXiv:2609.07447)](https://arxiv.org/abs/2609.07447) analyzed more than 390,000 KCI abstracts and found that words LLMs favor, such as 시사한다 ("suggests"), 확인되었다 ("was confirmed"), and 구조적 ("structural"), rose sharply from late 2024. The register reference is therefore five papers submitted before that shift. Papers from 2025 were used only for sentence frames that report confidence intervals, significance tests, and repeated runs.
+[Lee (2026, arXiv:2609.07447)](https://arxiv.org/abs/2609.07447) analyzed more than 390,000 KCI abstracts and found that words LLMs favor, such as 시사한다 ("suggests"), 확인되었다 ("was confirmed"), and 구조적 ("structural"), rose sharply from late 2024. The register reference is therefore 30 papers published in 2024, submitted between March 2023 and October 8, 2024. Papers from 2025 were used only for sentence frames that report confidence intervals, significance tests, and repeated runs.
 
 ---
 
@@ -35,26 +35,27 @@ After installing, ask as you normally would, for example "translate this English
 **Plugin install (recommended)**
 
 ```bash
-claude plugin marketplace add iamupd/korean-academic-paper-writing
-claude plugin install korean-academic-paper-writing@korean-academic-paper-writing
+claude plugin marketplace add iamupd/korean-research-paper-writing
+claude plugin install korean-research-paper-writing@korean-research-paper-writing
 ```
 
 **Copy the skill folder only**
 
 ```bash
-git clone https://github.com/iamupd/korean-academic-paper-writing
-cp -r korean-academic-paper-writing/plugins/korean-academic-paper-writing/skills/writing-korean-academic-papers ~/.claude/skills/
+git clone https://github.com/iamupd/korean-research-paper-writing
+cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills/writing-korean-research-papers ~/.claude/skills/
 ```
 
 **Check that it works:** with a Korean draft open, ask "check the style of this draft". You get the checker table and the sentences to fix.
 
 ## Features at a glance
 
+- **Field profiles**: section structure (for example, the combined "results and discussion" chapter in chemical engineering and chemistry, or separate simulation and real-data chapters in statistics), sentence conventions, and field medians for six fields: AI, computing other than AI, electronics and electrical engineering, mechanical, chemical, materials, and civil engineering, natural sciences, and data analysis and statistics.
 - **Section moves**: paragraph order, typical sentence frames, and tense for the abstract, introduction, related work, method, results, and conclusion.
 - **Sentence targets**: reference ranges for sentence length, tense, sentence linking, subject, term glossing, result verbs, and LLM-associated words.
-- **Translation table**: ten English discourse markers such as "Our findings:", "The practical rule is simple:", and "X helps only when Y", each mapped to a Korean paper frame.
+- **Translation table**: eleven English patterns, such as "Our findings:", "The practical rule is simple:", "X helps only when Y", and an aside set off by em dashes, each mapped to a Korean paper frame.
 - **Statistics and experiment frames**: sentences for repeated runs, mean ± standard deviation, 95% confidence intervals, significance tests, null results, interactions, ablations, and preregistered criteria, plus a strength table that matches the verb to the evidence.
-- **Style checker** (`ko_style_check.py`): scores a .tex, .md, or .txt draft on nine metrics, LLM-associated words, translation markers, and statistics notation, and compares each with the reference range.
+- **Style checker** (`ko_style_check.py`): scores a .tex, .md, or .txt draft on nine metrics, LLM-associated words, translation markers, statistics notation, and em dashes (including LaTeX `---`), and compares each with the reference range. With `--field`, the metrics that differed between fields (present tense, past tense, question marks) are judged against the field range, and every metric shows the field median.
 
 Every frame cites its source paper. Frames for cases no reference paper covers (paired-seed confidence intervals, preregistered criteria, and so on) are marked as the author's proposals.
 
@@ -109,28 +110,28 @@ You: "실험 결과 메모로 4장을 써 줘. 신뢰구간은 95% t 구간이�
 You: "main_ko.tex 문체 점검해 줘"
 ```
 
-A plain request is enough to load the skill. To call it explicitly, put `/korean-academic-paper-writing:writing-korean-academic-papers` before the request.
+A plain request is enough to load the skill. To call it explicitly, put `/korean-research-paper-writing:writing-korean-research-papers` before the request.
 
 ### Run the checker alone
 
 ```bash
-python plugins/korean-academic-paper-writing/skills/writing-korean-academic-papers/scripts/ko_style_check.py paper.tex
+python plugins/korean-research-paper-writing/skills/writing-korean-research-papers/scripts/ko_style_check.py paper.tex --field sci
 ```
 
-Output for the [plain translation example](examples/synthetic-reranker/2_korean_without_skill.md):
+`--field` takes one of `ai`, `cs`, `ee`, `me`, `sci`, `data`. Without it, every metric is judged against the pooled range of the 30 papers. Output for the [plain translation example](examples/synthetic-reranker/2_korean_without_skill.md) with `--field ai`:
 
 ```text
-| 지표 | 원고 | 기준 범위 | 판정 |
-|---|---|---|---|
-| 문장 길이 중앙값(자) | 44 | 65~90 | 낮음 |
-| 현재형 -ㄴ다/-는다 종결(%) | 48.6 | 25~42 | 높음 |
-| 문두 접속어 또한/특히/그러나/반면(%) | 8.6 | 9~20 | 낮음 |
-| 물음표 문장(/1000문장) | 57.1 | 0~35 | 높음 |
+| 지표 | 원고 | 기준 범위 | 판정 | 분야 중앙값 |
+|---|---|---|---|---|
+| 문장 길이 중앙값(자) | 44 | 55~105 | 낮음 | 77 |
+| 현재형 -ㄴ다/-는다 종결(%) [분야] | 48.6 | 25~45 | 높음 | 33.1 |
+| 문두 접속어 또한/특히/그러나/반면(%) | 8.6 | 9~24 | 낮음 | 17.5 |
+| 물음표 문장(/1000문장) [분야] | 57.1 | 0~35 | 높음 | 11.8 |
 ...
-번역투 표지: '지침/규칙은 단순하다' 1, '주요 결과는 다음과 같다' 1, '예상대로' 1, '그렇다면' 의문 1
+번역투 표지: '지침/규칙은 단순하다' 1, '주요 결과는 다음과 같다' 1, '예상대로' 1, '그렇다면' 의문 1, 괄호 안 콜론 뜻풀이 3
 ```
 
-The checker reports in Korean: 낮음 means below the reference range and 높음 means above it.
+The checker reports in Korean: 낮음 means below the reference range, 높음 means above it, and [분야] marks a metric judged against the field range.
 
 ### Supported drafts
 
@@ -144,7 +145,7 @@ The checker reports in Korean: 낮음 means below the reference range and 높음
 
 **Translating an English draft** (synthetic study, same draft, repeated runs)
 
-| | Without the skill (3 runs) | With the skill (4 runs) | Reference papers |
+| | Without the skill (3 runs) | With the skill (4 runs) | Reference papers (AI, 5) |
 |---|---|---|---|
 | Median sentence length | 44 to 52 chars | 72 to 80 chars | 68 to 79 chars |
 | Translation markers (8 types) | 3 to 7 | 0 | 0 |
@@ -156,32 +157,43 @@ The checker reports in Korean: 낮음 means below the reference range and 높음
 |---|---|---|---|
 | Sentences revised | 37 | 39 | 44 |
 | LLM-associated words | 3 → 0 | 3 → 0 | 1 → 0 |
-| Metrics out of range | 0 → 0 | 2 → 0 | 0 → 0 |
 | Numbers changed | 0 | 0 | 0 |
 
-**Real conference submission** (6 pages, no numbers changed)
+**Real conference submission** (6 pages, AI field, no numbers changed)
 
 | | Before | After |
 |---|---|---|
-| Metrics out of range | 7 of 9 | 0 of 9 |
+| Metrics out of range (`--field ai`) | 4 of 9 | 0 of 9 |
 | Median sentence length | 53 chars | 69 chars |
 | Past-tense endings | 15.9% | 44.2% |
 | Translation markers | 2 | 0 |
 
 ## Reference papers
 
-**Register reference: 5 papers.** AI papers published in 2024 in flagship KCI-indexed journals of Korean computing societies, chosen by citation count among those with open full text.
+**Register reference: 30 papers**, five per field, from KCI-indexed journals published in 2024.
 
-**Statistics and experiment frames: 6 papers.** Chosen by statistics-reporting density from the full text of 149 AI papers published in 2024 and 2025 in a flagship journal of the same field.
+| Field | Journals |
+|---|---|
+| AI | Journal of KIISE, KIPS Transactions, Journal of Intelligence and Information Systems (highly cited, open full text) |
+| Computing other than AI | Journal of the Korea Institute of Information Security and Cryptology, Journal of KIISE, KIPS Transactions |
+| Electronics and electrical | Journal of Korean Institute of Electromagnetic Engineering and Science, Transactions of the Korean Institute of Electrical Engineers, Journal of the Korean Institute of Communications and Information Sciences |
+| Mechanical, chemical, materials, civil | Journal of the Korean Society for Precision Engineering, Korean Chemical Engineering Research, KSCE Journal of Civil and Environmental Engineering Research |
+| Natural sciences | New Physics: Sae Mulli, Journal of the Korean Electrochemical Society, Journal of Life Science |
+| Data analysis and statistics | The Korean Journal of Applied Statistics, Journal of Society of Korea Industrial and Systems Engineering, Journal of Korean Society for Quality Management |
 
-The 11 reference papers also contain flaws, such as redundant wording, "significantly" without a test, and undefined ±. These are collected separately in [phrasebank.md](plugins/korean-academic-paper-writing/skills/writing-korean-academic-papers/reference/phrasebank.md) so they are not imitated.
+- For the five fields other than AI, each journal was read in table-of-contents order from its first 2024 issue, and the first paper meeting the criteria was taken: an original paper reporting experiments, measurements, or data analysis, with open full text, a Korean body, and sufficient length (criteria in [corpus.md](plugins/korean-research-paper-writing/skills/writing-korean-research-papers/reference/corpus.md), section 7).
+- A test across fields found clear field differences only in present-tense endings, past-tense endings, and question marks. The other metrics varied as much within a field as between fields, mostly with the type of paper (method description or measured results).
+
+**Statistics and experiment frames: 6 papers.** Chosen by statistics-reporting density from the full text of 149 AI papers published in 2024 and 2025 in a flagship journal of the AI field.
+
+The 11 AI reference papers (5 register, 6 statistics) also contain flaws, such as redundant wording, "significantly" without a test, and undefined ±. These are collected separately in [phrasebank.md](plugins/korean-research-paper-writing/skills/writing-korean-research-papers/reference/phrasebank.md) so they are not imitated.
 
 ---
 
 ## Known limitations
 
-- The reference papers are 11 papers in computing and AI. Other fields need their ranges measured again.
-- The reference ranges are observations, not rules. A sentence outside a range is not necessarily wrong.
+- Each field has five reference papers. Humanities (footnote citations, hanja glosses, readings of primary texts), education research, and clinical medicine were not measured, so the skill's reference does not apply to them.
+- The reference ranges are observations, not rules. A sentence outside a range is not necessarily wrong. Because each range spans the minimum and maximum of the 30 papers, a value inside the range but far from the field median is worth a second look.
 - Ratio metrics are noisy for partial drafts under 60 sentences.
 - The skill covers register and the conventional move structure of Korean papers. It does not cover argument design, such as which contribution to claim or which experiments support it.
 - Revision of human-written Korean drafts has not been tested separately.
@@ -196,6 +208,6 @@ MIT. Sentences quoted in the `reference/` folder remain the copyright of their a
 
 ## Changelog
 
-### v1.0.0 (2026-10-20): first release
+### v1.0.0 (2026-10-22): first release
 
-Section moves, sentence targets, the translation table, statistics and experiment frames, and the style checker (`ko_style_check.py`). Reference: 11 AI papers from KCI-indexed journals.
+Field profiles for six fields, section moves, sentence targets, the translation table, statistics and experiment frames, and the style checker with field ranges (`ko_style_check.py --field`). Reference: 30 research papers and 6 statistics papers from KCI-indexed journals.

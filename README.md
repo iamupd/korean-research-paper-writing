@@ -1,18 +1,18 @@
-# Claude Code를 위한 한국어 논문체 작성 스킬(Korean Academic Paper Writing Skill)
+# Claude Code를 위한 한국어 연구 논문 작성 스킬(Korean Research Paper Writing Skill)
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-D97757)](#빠른-설치)
-[![Reference papers](https://img.shields.io/badge/reference-11%20KCI%20papers-1f6feb)](#기준-논문)
+[![Reference papers](https://img.shields.io/badge/reference-36%20KCI%20papers-1f6feb)](#기준-논문)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 [English](README.en.md) | 한국어
 
-Claude Code로 한국어 학술논문을 쓰거나 고칠 때 쓰는 스킬입니다. 2024년 KCI 등재 학술지에 실린 AI 논문을 기준으로 문장 길이, 시제, 문장 연결, 용어 병기, 통계 보고 방식을 맞추고, 다 쓴 원고를 같은 기준으로 점검합니다.
+Claude Code로 컴퓨터·공학·자연과학 연구 논문(실험, 측정, 시뮬레이션, 데이터 분석)을 한국어로 쓰거나 고칠 때 쓰는 스킬입니다. 2024년 KCI 등재 학술지 논문 30편을 6개 분야로 나누어 문장 길이, 시제, 문장 연결, 용어 병기, 통계 보고 방식을 맞춥니다. 원고의 분야를 먼저 판별한 뒤, 그 분야의 장 구성과 기준으로 쓰고 점검합니다.
 
 **설치**(Claude Code CLI):
 
 ```bash
-claude plugin marketplace add iamupd/korean-academic-paper-writing
-claude plugin install korean-academic-paper-writing@korean-academic-paper-writing
+claude plugin marketplace add iamupd/korean-research-paper-writing
+claude plugin install korean-research-paper-writing@korean-research-paper-writing
 ```
 
 설치한 뒤에는 "이 영문 초안을 한국어 논문으로 옮겨 줘", "AI로 쓴 서론을 논문체로 고쳐 줘"처럼 평소대로 요청하면 됩니다. 플러그인 없이 쓰는 방법은 [빠른 설치](#빠른-설치)를 참고하세요.
@@ -21,7 +21,7 @@ claude plugin install korean-academic-paper-writing@korean-academic-paper-writin
 
 ### 왜 2024년 KCI 논문을 기준으로 삼았나요?
 
-KCI 초록 39만여 편을 분석한 [Lee (2026, arXiv:2609.07447)](https://arxiv.org/abs/2609.07447)에 따르면 "시사한다", "확인되었다", "구조적"처럼 LLM이 즐겨 쓰는 어휘가 2024년 말부터 눈에 띄게 늘었습니다. 그래서 문체 기준은 그 이전에 접수된 2024년 논문 5편으로 잡았습니다. 2025년 논문은 신뢰구간, 유의성 검정, 반복 실험을 보고하는 문장 틀을 가져오는 데에만 썼습니다.
+KCI 초록 39만여 편을 분석한 [Lee (2026, arXiv:2609.07447)](https://arxiv.org/abs/2609.07447)에 따르면 "시사한다", "확인되었다", "구조적"처럼 LLM이 즐겨 쓰는 어휘가 2024년 말부터 눈에 띄게 늘었습니다. 그래서 문체 기준은 2024년에 실린 논문 30편으로 잡았고, 30편의 접수일은 2023년 3월부터 2024년 10월 8일 사이입니다. 2025년 논문은 신뢰구간, 유의성 검정, 반복 실험을 보고하는 문장 틀을 가져오는 데에만 썼습니다.
 
 ---
 
@@ -35,26 +35,27 @@ KCI 초록 39만여 편을 분석한 [Lee (2026, arXiv:2609.07447)](https://arxi
 **플러그인 설치(권장)**
 
 ```bash
-claude plugin marketplace add iamupd/korean-academic-paper-writing
-claude plugin install korean-academic-paper-writing@korean-academic-paper-writing
+claude plugin marketplace add iamupd/korean-research-paper-writing
+claude plugin install korean-research-paper-writing@korean-research-paper-writing
 ```
 
 **스킬 폴더만 복사**
 
 ```bash
-git clone https://github.com/iamupd/korean-academic-paper-writing
-cp -r korean-academic-paper-writing/plugins/korean-academic-paper-writing/skills/writing-korean-academic-papers ~/.claude/skills/
+git clone https://github.com/iamupd/korean-research-paper-writing
+cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills/writing-korean-research-papers ~/.claude/skills/
 ```
 
 **동작 확인:** 한국어 원고 파일을 열어 둔 상태에서 "이 원고 문체 점검해 줘"라고 요청하면 점검표와 함께 고칠 문장을 알려 줍니다.
 
 ## 한눈에 보는 기능
 
+- **분야 프로필**: AI, 컴퓨터(AI 이외), 전자·통신·전기, 기계·화공·재료·토목, 자연과학, 데이터 분석·통계의 6개 분야별 장 구성(예: 화공·화학의 "결과 및 고찰", 통계의 "모의실험"과 "실제 자료 분석"), 문장 관례, 분야 중앙값.
 - **장별 구성표**: 초록, 서론, 관련 연구, 방법, 실험 결과, 결론의 문단 순서와 대표 문장 틀, 장별 시제.
 - **문장 기준**: 문장 길이, 시제, 문장 연결, 주어, 용어 병기, 결과 동사, LLM 연관 어휘의 기준 범위.
-- **번역투 대응표**: "Our findings:", "The practical rule is simple:", "X helps only when Y" 같은 영어 표현 10종을 한국어 논문의 문장 틀로 바꾸는 표.
+- **번역투 대응표**: "Our findings:", "The practical rule is simple:", "X helps only when Y" 같은 영어 표현과 엠대시 삽입구 11종을 한국어 논문의 문장 틀로 바꾸는 표.
 - **통계·실험 보고 틀**: 반복 실험, 평균±표준편차, 95% 신뢰구간, 유의성 검정, 차이 없음, 상호작용, 어블레이션, 사전 판정 기준을 쓰는 문장과, 근거 수준에 맞는 동사를 고르는 강도표.
-- **문체 점검기**(`ko_style_check.py`): .tex, .md, .txt 원고를 9개 지표, LLM 연관 어휘, 번역투 표현, 통계 표기로 점검하고 기준 범위와 비교합니다.
+- **문체 점검기**(`ko_style_check.py`): .tex, .md, .txt 원고를 9개 지표, LLM 연관 어휘, 번역투 표현, 통계 표기, 엠대시(LaTeX `---` 포함)로 점검하고 기준 범위와 비교합니다. `--field`로 분야를 지정하면 분야마다 달랐던 지표(현재형, 과거형, 물음표)는 분야 범위로 판정하고, 모든 지표에 분야 중앙값을 함께 보여 줍니다.
 
 모든 문장 틀에는 출처 논문을 붙였습니다. 기준 논문 어디에도 없는 유형(시드 짝 신뢰구간, 사전 판정 기준 등)은 "작성자 제안"으로 따로 표시했습니다.
 
@@ -107,25 +108,25 @@ You: "실험 결과 메모로 4장을 써 줘. 신뢰구간은 95% t 구간이�
 You: "main_ko.tex 문체 점검해 줘"
 ```
 
-평소대로 요청하면 스킬이 자동으로 실행됩니다. 직접 부르려면 요청 앞에 `/korean-academic-paper-writing:writing-korean-academic-papers`를 붙입니다.
+평소대로 요청하면 스킬이 자동으로 실행됩니다. 직접 부르려면 요청 앞에 `/korean-research-paper-writing:writing-korean-research-papers`를 붙입니다.
 
 ### 점검기만 실행
 
 ```bash
-python plugins/korean-academic-paper-writing/skills/writing-korean-academic-papers/scripts/ko_style_check.py paper.tex
+python plugins/korean-research-paper-writing/skills/writing-korean-research-papers/scripts/ko_style_check.py paper.tex --field sci
 ```
 
-[일반 번역 예시](examples/synthetic-reranker/2_korean_without_skill.md)를 점검한 결과입니다.
+`--field`에는 `ai`, `cs`, `ee`, `me`, `sci`, `data` 중 하나를 넣습니다. 빼면 30편 공통 범위로 판정합니다. [일반 번역 예시](examples/synthetic-reranker/2_korean_without_skill.md)를 `--field ai`로 점검한 결과입니다.
 
 ```text
-| 지표 | 원고 | 기준 범위 | 판정 |
-|---|---|---|---|
-| 문장 길이 중앙값(자) | 44 | 65~90 | 낮음 |
-| 현재형 -ㄴ다/-는다 종결(%) | 48.6 | 25~42 | 높음 |
-| 문두 접속어 또한/특히/그러나/반면(%) | 8.6 | 9~20 | 낮음 |
-| 물음표 문장(/1000문장) | 57.1 | 0~35 | 높음 |
+| 지표 | 원고 | 기준 범위 | 판정 | 분야 중앙값 |
+|---|---|---|---|---|
+| 문장 길이 중앙값(자) | 44 | 55~105 | 낮음 | 77 |
+| 현재형 -ㄴ다/-는다 종결(%) [분야] | 48.6 | 25~45 | 높음 | 33.1 |
+| 문두 접속어 또한/특히/그러나/반면(%) | 8.6 | 9~24 | 낮음 | 17.5 |
+| 물음표 문장(/1000문장) [분야] | 57.1 | 0~35 | 높음 | 11.8 |
 ...
-번역투 표지: '지침/규칙은 단순하다' 1, '주요 결과는 다음과 같다' 1, '예상대로' 1, '그렇다면' 의문 1
+번역투 표지: '지침/규칙은 단순하다' 1, '주요 결과는 다음과 같다' 1, '예상대로' 1, '그렇다면' 의문 1, 괄호 안 콜론 뜻풀이 3
 ```
 
 ### 지원 원고
@@ -140,7 +141,7 @@ python plugins/korean-academic-paper-writing/skills/writing-korean-academic-pape
 
 **영문 초안 번역**(가상 연구, 같은 초안으로 반복)
 
-| | 스킬 없음(3회) | 스킬 적용(4회) | 기준 논문 |
+| | 스킬 없음(3회) | 스킬 적용(4회) | 기준 논문(AI 5편) |
 |---|---|---|---|
 | 문장 길이 중앙값 | 44~52자 | 72~80자 | 68~79자 |
 | 번역투 표지(8종 합계) | 3~7회 | 0회 | 0회 |
@@ -152,32 +153,43 @@ python plugins/korean-academic-paper-writing/skills/writing-korean-academic-pape
 |---|---|---|---|
 | 고친 문장 | 37 | 39 | 44 |
 | LLM 연관 어휘 | 3 → 0회 | 3 → 0회 | 1 → 0회 |
-| 범위 밖 지표 | 0 → 0개 | 2 → 0개 | 0 → 0개 |
 | 바뀐 수치 | 0개 | 0개 | 0개 |
 
-**실제 투고 원고**(6쪽, 수치는 그대로)
+**실제 투고 원고**(6쪽, AI 분야, 수치는 그대로)
 
 | | 교정 전 | 교정 후 |
 |---|---|---|
-| 범위 밖 지표 | 9개 중 7개 | 9개 중 0개 |
+| 범위 밖 지표(`--field ai`) | 9개 중 4개 | 9개 중 0개 |
 | 문장 길이 중앙값 | 53자 | 69자 |
 | 과거형 종결 | 15.9% | 44.2% |
 | 번역투 표지 | 2회 | 0회 |
 
 ## 기준 논문
 
-**문체 기준 5편**: 2024년 컴퓨터·전자 분야 학회 대표 학술지(KCI 등재)에 실린 AI 논문 가운데 피인용 수가 많고 원문이 공개된 논문 5편을 골랐습니다.
+**문체 기준 30편**: 2024년 KCI 등재 학술지 논문을 6개 분야에서 5편씩 골랐습니다.
 
-**통계·실험 보고 6편**: 같은 분야 학회 대표 학술지에 2024~2025년 실린 AI 논문 149편의 원문에서 통계 보고가 많은 논문 6편을 골랐습니다.
+| 분야 | 학술지 |
+|---|---|
+| AI | 정보과학회논문지, 정보처리학회 논문지, 지능정보연구(피인용 상위, 원문 공개) |
+| 컴퓨터(AI 이외) | 정보보호학회논문지, 정보과학회논문지, 정보처리학회 논문지 |
+| 전자·통신·전기 | 한국전자파학회논문지, 전기학회논문지, 한국통신학회논문지 |
+| 기계·화공·재료·토목 | 한국정밀공학회지, 화학공학, 대한토목학회논문집 |
+| 자연과학 | 새물리, 전기화학회지, 생명과학회지 |
+| 데이터 분석·통계 | 응용통계연구, 한국산업경영시스템학회지, 품질경영학회지 |
 
-기준 논문 11편에도 의미 중복, 검정 없이 쓴 "유의미하게", 정의하지 않은 ± 같은 결함이 있었습니다. 이런 결함은 따라 하지 않도록 [phrasebank.md](plugins/korean-academic-paper-writing/skills/writing-korean-academic-papers/reference/phrasebank.md)에 따로 정리했습니다.
+- AI 이외 다섯 분야는 학술지마다 2024년 첫 호부터 목차 순서대로 보고, 조건을 처음 만족하는 논문을 골랐습니다. 조건은 실험·측정·데이터 분석을 보고하는 원저 논문, 원문 무료 공개, 본문 한국어, 충분한 분량입니다(선정 기준은 [corpus.md](plugins/korean-research-paper-writing/skills/writing-korean-research-papers/reference/corpus.md) 7절).
+- 분야 차이 검정 결과, 분야마다 뚜렷하게 다른 지표는 현재형·과거형 종결과 물음표뿐이었습니다. 나머지 지표는 같은 분야 안에서도 논문 유형(방법 서술 위주인지, 측정 결과 위주인지)에 따라 크게 달랐습니다.
+
+**통계·실험 보고 6편**: AI 분야 학회 대표 학술지에 2024~2025년 실린 AI 논문 149편의 원문에서 통계 보고가 많은 논문 6편을 골랐습니다.
+
+AI 분야 기준 논문 11편(문체 5편, 통계 보고 6편)에도 의미 중복, 검정 없이 쓴 "유의미하게", 정의하지 않은 ± 같은 결함이 있었습니다. 이런 결함은 따라 하지 않도록 [phrasebank.md](plugins/korean-research-paper-writing/skills/writing-korean-research-papers/reference/phrasebank.md)에 따로 정리했습니다.
 
 ---
 
 ## 알려진 한계
 
-- 기준 논문은 컴퓨터·AI 분야 11편입니다. 다른 분야에 쓰려면 기준 범위를 다시 재야 합니다.
-- 기준 범위는 규범이 아니라 관찰값입니다. 범위를 벗어났다고 틀린 문장은 아닙니다.
+- 분야마다 기준 논문이 5편입니다. 인문학(각주 인용, 한자 병기, 원전 해석), 교육 연구, 임상 의학은 재지 않았으므로 이 스킬의 기준을 적용하지 않습니다.
+- 기준 범위는 규범이 아니라 관찰값입니다. 범위를 벗어났다고 틀린 문장은 아닙니다. 범위는 30편의 최솟값~최댓값이라, 범위 안이라도 분야 중앙값과 크게 다르면 한 번 더 확인하는 것이 좋습니다.
 - 문장 60개 미만의 부분 원고에서는 비율 지표의 오차가 큽니다.
 - 문체와 한국어 논문의 전개 관례만 다룹니다. 무엇을 기여로 내세울지, 어떤 실험이 주장을 뒷받침하는지 같은 논증 구조는 다루지 않습니다.
 - 사람이 쓴 한국어 원고의 교정은 아직 따로 시험하지 않았습니다.
@@ -192,6 +204,6 @@ MIT. `reference/` 폴더에 인용한 문장의 저작권은 각 논문의 저�
 
 ## 변경 이력
 
-### v1.0.0 (2026-10-20): 첫 공개
+### v1.0.0 (2026-10-22): 첫 공개
 
-장별 구성표, 문장 기준, 번역투 대응표, 통계·실험 보고 틀, 문체 점검기(`ko_style_check.py`)를 공개합니다. 기준 논문은 KCI 등재 학술지 AI 논문 11편입니다.
+분야 프로필(6개 분야), 장별 구성표, 문장 기준, 번역투 대응표, 통계·실험 보고 틀, 분야별 범위를 쓰는 문체 점검기(`ko_style_check.py --field`)를 공개합니다. 기준 논문은 KCI 등재 학술지 연구 논문 30편과 통계 보고 6편입니다.

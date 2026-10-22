@@ -1,0 +1,12 @@
+{
+  "name": "korean-research-paper-writing",
+  "displayName": "Korean Research Paper Writing (한국어 연구 논문체)",
+  "version": "1.0.0",
+  "description": "Writes, translates, and revises Korean research papers in computing, engineering, and the natural sciences (experiments, measurements, simulations, data analysis), including AI-written drafts, with a corpus-calibrated style checker and statistics-reporting frames.",
+  "author": {
+    "name": "Min-Young Yu"
+  },
+  "repository": "https://github.com/iamupd/korean-research-paper-writing",
+  "license": "MIT",
+  "keywords": ["korean", "research-paper", "academic-writing", "engineering", "science", "kci", "translationese", "style-checker", "skill"]
+}

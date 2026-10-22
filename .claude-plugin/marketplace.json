@@ -1,14 +1,14 @@
 {
-  "name": "korean-academic-paper-writing",
-  "description": "Korean academic paper writing skill for Claude Code (한국어 논문체 스킬)",
+  "name": "korean-research-paper-writing",
+  "description": "Korean research paper writing skill for Claude Code: computing, engineering, and science papers (한국어 연구 논문체 스킬)",
   "owner": {
     "name": "Min-Young Yu"
   },
   "plugins": [
     {
-      "name": "korean-academic-paper-writing",
-      "source": "./plugins/korean-academic-paper-writing",
-      "description": "영문 초안 번역, 연구 메모로 쓰기, AI가 쓴 한국어 원고 교정을 KCI 논문체 기준으로 하는 스킬"
+      "name": "korean-research-paper-writing",
+      "source": "./plugins/korean-research-paper-writing",
+      "description": "컴퓨터·공학·자연과학 연구 논문(실험·측정·시뮬레이션·데이터 분석)의 영문 초안 번역, 연구 메모로 쓰기, AI가 쓴 한국어 원고 교정을 KCI 논문 기준으로 하는 스킬"
     }
   ]
 }

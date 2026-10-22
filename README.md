@@ -1,12 +1,15 @@
-# Claude Code를 위한 한국어 연구 논문 작성 스킬(Korean Research Paper Writing Skill)
+# Claude Code와 Codex를 위한 한국어 연구 논문체 작성 스킬(Korean Research Paper Writing Skill)
+
+![한국어 연구 논문체 작성 스킬: KCI 논문 36편 분석, 6개 분야 프로필, 번역투 대응표와 문체 점검기](assets/banner.png)
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-D97757)](#빠른-설치)
+[![Codex skill](https://img.shields.io/badge/Codex-skill-412991)](#빠른-설치)
 [![Reference papers](https://img.shields.io/badge/reference-36%20KCI%20papers-1f6feb)](#기준-논문)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 [English](README.en.md) | 한국어
 
-Claude Code로 컴퓨터·공학·자연과학 연구 논문(실험, 측정, 시뮬레이션, 데이터 분석)을 한국어로 쓰거나 고칠 때 쓰는 스킬입니다. 2024년 KCI 등재 학술지 논문 30편을 6개 분야로 나누어 문장 길이, 시제, 문장 연결, 용어 병기, 통계 보고 방식을 맞춥니다. 원고의 분야를 먼저 판별한 뒤, 그 분야의 장 구성과 기준으로 쓰고 점검합니다.
+Claude Code나 Codex로 컴퓨터·공학·자연과학 연구 논문(실험, 측정, 시뮬레이션, 데이터 분석)을 한국어로 쓰거나 고칠 때 쓰는 스킬입니다. 2024년 KCI 등재 학술지 논문 30편을 6개 분야로 나누어 문장 길이, 시제, 문장 연결, 용어 병기, 통계 보고 방식을 맞춥니다. 원고의 분야를 먼저 판별한 뒤, 그 분야의 장 구성과 기준으로 쓰고 점검합니다.
 
 **설치**(Claude Code CLI):
 
@@ -15,7 +18,7 @@ claude plugin marketplace add iamupd/korean-research-paper-writing
 claude plugin install korean-research-paper-writing@korean-research-paper-writing
 ```
 
-설치한 뒤에는 "이 영문 초안을 한국어 논문으로 옮겨 줘", "AI로 쓴 서론을 논문체로 고쳐 줘"처럼 평소대로 요청하면 됩니다. 플러그인 없이 쓰는 방법은 [빠른 설치](#빠른-설치)를 참고하세요.
+설치한 뒤에는 "이 영문 초안을 한국어 논문으로 옮겨 줘", "AI로 쓴 서론을 논문체로 고쳐 줘"처럼 평소대로 요청하면 됩니다. 플러그인 없이 쓰거나 Codex에서 쓰는 방법은 [빠른 설치](#빠른-설치)를 참고하세요.
 
 > **AI 사용을 숨기는 도구가 아닙니다.** 이 스킬은 AI 탐지를 피하려고 만든 것이 아닙니다. 영문 초안을 그대로 옮긴 문장, 근거보다 강한 단정, 본문과 어긋난 결론처럼 논문의 질을 떨어뜨리는 문장을 고칩니다. AI를 사용했다면 투고처의 규정에 따라 밝히세요.
 
@@ -29,7 +32,7 @@ KCI 초록 39만여 편을 분석한 [Lee (2026, arXiv:2609.07447)](https://arxi
 
 **사전 요건**
 
-- [Claude Code](https://docs.claude.com/en/docs/claude-code/setup)
+- [Claude Code](https://docs.claude.com/en/docs/claude-code/setup) 또는 [Codex](https://learn.chatgpt.com/docs/build-skills)
 - *선택:* 문체 점검기를 직접 실행하려면 Python 3.9 이상
 
 **플러그인 설치(권장)**
@@ -45,6 +48,16 @@ claude plugin install korean-research-paper-writing@korean-research-paper-writin
 git clone https://github.com/iamupd/korean-research-paper-writing
 cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills/writing-korean-research-papers ~/.claude/skills/
 ```
+
+**Codex에서 쓰기**
+
+```bash
+git clone https://github.com/iamupd/korean-research-paper-writing
+mkdir -p ~/.agents/skills
+cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills/writing-korean-research-papers ~/.agents/skills/
+```
+
+Codex는 `~/.agents/skills/`(모든 프로젝트) 또는 프로젝트 안의 `.agents/skills/`(그 프로젝트만)에 있는 스킬을 읽습니다([Codex 스킬 문서](https://learn.chatgpt.com/docs/build-skills)). 요청 앞에 `$writing-korean-research-papers`를 붙여 부르세요. 시험에서는 이름을 붙였을 때 스킬이 실행되었고, 이름 없이 요청했을 때는 자동으로 실행되지 않았습니다.
 
 **동작 확인:** 한국어 원고 파일을 열어 둔 상태에서 "이 원고 문체 점검해 줘"라고 요청하면 점검표와 함께 고칠 문장을 알려 줍니다.
 
@@ -108,7 +121,7 @@ You: "실험 결과 메모로 4장을 써 줘. 신뢰구간은 95% t 구간이�
 You: "main_ko.tex 문체 점검해 줘"
 ```
 
-평소대로 요청하면 스킬이 자동으로 실행됩니다. 직접 부르려면 요청 앞에 `/korean-research-paper-writing:writing-korean-research-papers`를 붙입니다.
+Claude Code에서는 평소대로 요청하면 스킬이 자동으로 실행됩니다. 직접 부르려면 요청 앞에 `/korean-research-paper-writing:writing-korean-research-papers`를 붙입니다. Codex에서는 `$writing-korean-research-papers`를 붙여 부릅니다.
 
 ### 점검기만 실행
 
@@ -192,6 +205,7 @@ AI 분야 기준 논문 11편(문체 5편, 통계 보고 6편)에도 의미 중�
 - 문장 60개 미만의 부분 원고에서는 비율 지표의 오차가 큽니다.
 - 문체와 한국어 논문의 전개 관례만 다룹니다. 무엇을 기여로 내세울지, 어떤 실험이 주장을 뒷받침하는지 같은 논증 구조는 다루지 않습니다.
 - 사람이 쓴 한국어 원고의 교정은 아직 따로 시험하지 않았습니다.
+- Codex에서는 한 번만 시험했습니다. 스킬 이름을 붙이면 실행되었으나, 이름 없이 요청했을 때의 자동 실행과 Codex에서의 문체 점검기 실행은 확인하지 않았습니다.
 
 ## 라이선스
 
@@ -205,4 +219,4 @@ MIT. `reference/` 폴더에 인용한 문장의 저작권은 각 논문의 저�
 
 ### v1.0.0 (2026-10-22): 첫 공개
 
-분야 프로필(6개 분야), 장별 구성표, 문장 기준, 번역투 대응표, 통계·실험 보고 틀, 분야별 범위를 쓰는 문체 점검기(`ko_style_check.py --field`)를 공개합니다. 기준 논문은 KCI 등재 학술지 연구 논문 30편과 통계 보고 6편입니다.
+분야 프로필(6개 분야), 장별 구성표, 문장 기준, 번역투 대응표, 통계·실험 보고 틀, 분야별 범위를 쓰는 문체 점검기(`ko_style_check.py --field`)를 공개합니다. 기준 논문은 KCI 등재 학술지 연구 논문 30편과 통계 보고 6편입니다. 같은 스킬 폴더를 Codex에서도 쓸 수 있습니다.

@@ -3,7 +3,7 @@ name: writing-korean-research-papers
 description: Use when writing, translating, or revising a Korean-language research paper or conference manuscript in computing, engineering, or the natural sciences that reports experiments, measurements, simulations, or data analysis (국문 논문, 한국어 검토본, KCI 학술지, 국내 학술대회, 공학·과학 논문), especially when the Korean text is produced from an English draft or 개조체 notes, when an AI wrote or polished the Korean draft, or when a reader says the Korean reads 어색하다, 번역투, AI 티, or 끊긴다. Not for humanities papers that cite in footnotes, gloss terms in hanja, or interpret primary texts.
 ---
 
-# 한국어 연구 논문 쓰기
+# 한국어 연구 논문체 쓰기
 
 ## 개요
 

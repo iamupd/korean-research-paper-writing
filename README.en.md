@@ -1,12 +1,15 @@
-# Korean Research Paper Writing Skill for Claude Code
+# Korean Research Paper Writing Skill for Claude Code and Codex
+
+![Korean Research Paper Writing Skill: 36 KCI papers analyzed, six field profiles, translation table and style checker](assets/banner.png)
 
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-D97757)](#quick-install)
+[![Codex skill](https://img.shields.io/badge/Codex-skill-412991)](#quick-install)
 [![Reference papers](https://img.shields.io/badge/reference-36%20KCI%20papers-1f6feb)](#reference-papers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 
 English | [한국어](README.md)
 
-A Claude Code skill for writing and revising Korean research papers in computing, engineering, and the natural sciences (experiments, measurements, simulations, and data analysis). It matches sentence length, tense, sentence linking, term glossing, and statistics reporting to 30 papers published in KCI-indexed Korean journals in 2024, grouped into six fields. It first identifies the field of the draft, then writes and checks it against that field's section structure and reference.
+A Claude Code and Codex skill for writing and revising Korean research papers in computing, engineering, and the natural sciences (experiments, measurements, simulations, and data analysis). It matches sentence length, tense, sentence linking, term glossing, and statistics reporting to 30 papers published in KCI-indexed Korean journals in 2024, grouped into six fields. It first identifies the field of the draft, then writes and checks it against that field's section structure and reference.
 
 **Install** (Claude Code CLI):
 
@@ -15,7 +18,7 @@ claude plugin marketplace add iamupd/korean-research-paper-writing
 claude plugin install korean-research-paper-writing@korean-research-paper-writing
 ```
 
-After installing, ask as you normally would, for example "translate this English draft into a Korean paper" or "revise this AI-written introduction in Korean academic style". To use the skill without the plugin system, see [Quick install](#quick-install).
+After installing, ask as you normally would, for example "translate this English draft into a Korean paper" or "revise this AI-written introduction in Korean academic style". To use the skill without the plugin system or in Codex, see [Quick install](#quick-install).
 
 > **This is not a tool for hiding AI use.** It was not built to evade AI detectors. It fixes sentences that lower the quality of a paper: English drafts carried over word for word, claims stronger than the evidence, and conclusions that contradict the results. If you used AI, disclose it as your venue requires.
 
@@ -29,7 +32,7 @@ After installing, ask as you normally would, for example "translate this English
 
 **Requirements**
 
-- [Claude Code](https://docs.claude.com/en/docs/claude-code/setup)
+- [Claude Code](https://docs.claude.com/en/docs/claude-code/setup) or [Codex](https://learn.chatgpt.com/docs/build-skills)
 - *Optional:* Python 3.9 or later to run the style checker directly
 
 **Plugin install (recommended)**
@@ -45,6 +48,16 @@ claude plugin install korean-research-paper-writing@korean-research-paper-writin
 git clone https://github.com/iamupd/korean-research-paper-writing
 cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills/writing-korean-research-papers ~/.claude/skills/
 ```
+
+**Use in Codex**
+
+```bash
+git clone https://github.com/iamupd/korean-research-paper-writing
+mkdir -p ~/.agents/skills
+cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills/writing-korean-research-papers ~/.agents/skills/
+```
+
+Codex reads skills from `~/.agents/skills/` (all projects) or `.agents/skills/` inside a project (that project only) ([Codex skills docs](https://learn.chatgpt.com/docs/build-skills)). Call the skill by putting `$writing-korean-research-papers` before the request. In our test the skill ran when named and did not run on its own when the request did not name it.
 
 **Check that it works:** with a Korean draft open, ask "check the style of this draft". You get the checker table and the sentences to fix.
 
@@ -110,7 +123,7 @@ You: "실험 결과 메모로 4장을 써 줘. 신뢰구간은 95% t 구간이�
 You: "main_ko.tex 문체 점검해 줘"
 ```
 
-A plain request is enough to load the skill. To call it explicitly, put `/korean-research-paper-writing:writing-korean-research-papers` before the request.
+In Claude Code, a plain request is enough to load the skill. To call it explicitly, put `/korean-research-paper-writing:writing-korean-research-papers` before the request. In Codex, put `$writing-korean-research-papers` before the request.
 
 ### Run the checker alone
 
@@ -196,6 +209,7 @@ The 11 AI reference papers (5 register, 6 statistics) also contain flaws, such a
 - Ratio metrics are noisy for partial drafts under 60 sentences.
 - The skill covers register and the conventional move structure of Korean papers. It does not cover argument design, such as which contribution to claim or which experiments support it.
 - Revision of human-written Korean drafts has not been tested separately.
+- Codex was tested once. The skill ran when named; running on its own without the name, and running the style checker in Codex, were not confirmed.
 
 ## License
 
@@ -209,4 +223,4 @@ MIT. Sentences quoted in the `reference/` folder remain the copyright of their a
 
 ### v1.0.0 (2026-10-22): first release
 
-Field profiles for six fields, section moves, sentence targets, the translation table, statistics and experiment frames, and the style checker with field ranges (`ko_style_check.py --field`). Reference: 30 research papers and 6 statistics papers from KCI-indexed journals.
+Field profiles for six fields, section moves, sentence targets, the translation table, statistics and experiment frames, and the style checker with field ranges (`ko_style_check.py --field`). Reference: 30 research papers and 6 statistics papers from KCI-indexed journals. The same skill folder also works in Codex.

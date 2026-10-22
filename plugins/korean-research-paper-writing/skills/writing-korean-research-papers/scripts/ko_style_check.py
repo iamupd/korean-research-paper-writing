@@ -5,6 +5,7 @@ DRAFT may be .tex, .md or .txt. Tables, figures, captions, comments and LaTeX co
 before counting, because table and figure text follows a different register (개조체).
 Only declarative sentences ending in '다.' with mostly Hangul characters are counted.
 --field picks the field profile (reference/fields.md). Without it, every metric is judged against the pooled range.
+Tense is not judged by ratio: it follows each sentence's function. Only past-form consistency (하였다 vs 했다) is counted.
 """
 import argparse
 import re
@@ -22,8 +23,6 @@ PROFILES = {
 TARGETS = [
     # key, label, low, high, how to read
     ("median_len", "문장 길이 중앙값(자)", 55, 105, "짧으면 끊기는 번역투, 길면 만연체"),
-    ("present_pct", "현재형 -ㄴ다/-는다 종결(%)", 10, 70, "방법·시스템 설명 위주이면 높고, 측정 결과 위주이면 낮음"),
-    ("past_pct", "과거형 -ㅆ다 종결(하였다·나타났다 등, %)", 5, 75, "측정·합성 실험 논문은 높고, 방법 제안·모형 논문은 낮음"),
     ("can_pct", "'수 있다/없다' 종결(%)", 0, 20, ""),
     ("anaphor_pct", "문두 지시어 이/이를/이러한/이는(%)", 1, 26, "낮으면 문장끼리 이어지지 않음"),
     ("conj_pct", "문두 접속어 또한/특히/그러나/반면(%)", 9, 24, "낮으면 문단 흐름이 끊김"),
@@ -33,19 +32,19 @@ TARGETS = [
 ]
 # Metrics whose distribution differed across the six profiles (Kruskal-Wallis p < 0.05, n = 5 per profile);
 # with --field these replace the pooled range. Ranges are each profile's min and max, rounded outward.
+# Present and past tense ratios also differed (p = 0.024, 0.041) but varied more with paper type than field,
+# so they are not judged (reference/corpus.md 7.3).
 FIELD_RANGES = {
-    "present_pct": {"ai": (25, 45), "cs": (30, 60), "ee": (20, 70), "me": (15, 40), "sci": (10, 30), "data": (15, 65)},  # H = 12.97, p = 0.024
-    "past_pct": {"ai": (5, 45), "cs": (10, 30), "ee": (5, 50), "me": (25, 70), "sci": (20, 75), "data": (5, 40)},  # H = 11.56, p = 0.041
     "question_rate": {"ai": (0, 35), "cs": (0, 0), "ee": (0, 0), "me": (0, 0), "sci": (0, 0), "data": (0, 0)},  # H = 22.17, p < 0.001
 }
 # Profile medians (reference only, shown next to the verdict).
 FIELD_MEDIANS = {
-    "ai": {"median_len": 77, "present_pct": 33.1, "past_pct": 31, "can_pct": 8.5, "anaphor_pct": 13.6, "conj_pct": 17.5, "gloss_rate": 131.3, "result_frames": 47.6, "question_rate": 11.8, "llm_rate": 20.2},
-    "cs": {"median_len": 77, "present_pct": 42.4, "past_pct": 15.1, "can_pct": 9.3, "anaphor_pct": 13.9, "conj_pct": 13.2, "gloss_rate": 69.4, "result_frames": 42.5, "question_rate": 0, "llm_rate": 13.9},
-    "ee": {"median_len": 81, "present_pct": 38.8, "past_pct": 25.5, "can_pct": 6.4, "anaphor_pct": 13, "conj_pct": 11.2, "gloss_rate": 134, "result_frames": 72.2, "question_rate": 0, "llm_rate": 14.2},
-    "me": {"median_len": 81, "present_pct": 28.8, "past_pct": 33.8, "can_pct": 11.3, "anaphor_pct": 9.1, "conj_pct": 12, "gloss_rate": 96, "result_frames": 90.9, "question_rate": 0, "llm_rate": 16},
-    "sci": {"median_len": 94, "present_pct": 23.3, "past_pct": 54.3, "can_pct": 15.5, "anaphor_pct": 15.1, "conj_pct": 12.3, "gloss_rate": 293.7, "result_frames": 135.9, "question_rate": 0, "llm_rate": 68},
-    "data": {"median_len": 68, "present_pct": 43, "past_pct": 22.2, "can_pct": 9.6, "anaphor_pct": 11.4, "conj_pct": 18.4, "gloss_rate": 113.1, "result_frames": 105.8, "question_rate": 0, "llm_rate": 9.6},
+    "ai": {"median_len": 77, "can_pct": 8.5, "anaphor_pct": 13.6, "conj_pct": 17.5, "gloss_rate": 131.3, "result_frames": 47.6, "question_rate": 11.8, "llm_rate": 20.2},
+    "cs": {"median_len": 77, "can_pct": 9.3, "anaphor_pct": 13.9, "conj_pct": 13.2, "gloss_rate": 69.4, "result_frames": 42.5, "question_rate": 0, "llm_rate": 13.9},
+    "ee": {"median_len": 81, "can_pct": 6.4, "anaphor_pct": 13, "conj_pct": 11.2, "gloss_rate": 134, "result_frames": 72.2, "question_rate": 0, "llm_rate": 14.2},
+    "me": {"median_len": 81, "can_pct": 11.3, "anaphor_pct": 9.1, "conj_pct": 12, "gloss_rate": 96, "result_frames": 90.9, "question_rate": 0, "llm_rate": 16},
+    "sci": {"median_len": 94, "can_pct": 15.5, "anaphor_pct": 15.1, "conj_pct": 12.3, "gloss_rate": 293.7, "result_frames": 135.9, "question_rate": 0, "llm_rate": 68},
+    "data": {"median_len": 68, "can_pct": 9.6, "anaphor_pct": 11.4, "conj_pct": 18.4, "gloss_rate": 113.1, "result_frames": 105.8, "question_rate": 0, "llm_rate": 9.6},
 }
 LLM_MARKERS = {  # rising in KCI abstracts after late 2024 (Lee, arXiv:2609.07447). Corpus rate per 1000 sentences in ().
     "시사하다": r"시사(한다|하였다|했다|하는|함|하며)",
@@ -120,23 +119,11 @@ def sentences(t):
 CAN = r"수\s*(있|없)(다|었다)$"
 
 
-def final_coda(s):
-    """Coda (final consonant) index of the syllable before the closing '다'; -1 if not Hangul."""
-    s = re.sub(r"\([^()]*\)다$", "", s)  # undo the kept statistics parenthesis: 보였다(p < 0.05)다 -> 보였다
-    if len(s) < 2 or not s.endswith("다"):
-        return -1
-    c = ord(s[-2]) - 0xAC00
-    return c % 28 if 0 <= c < 11172 else -1
+def ending(s):
+    """Sentence without the kept statistics parenthesis: 보였다(p < 0.05)다 -> 보였다."""
+    return re.sub(r"\([^()]*\)다$", "", s)
 
 
-def is_past(s):
-    # 하였다, 나타났다, 낮아졌다 ...: syllable before 다 ends in ㅆ (index 20), except 있다.
-    return final_coda(s) == 20 and not s.endswith("있다")
-
-
-def is_present(s):
-    # 한다, 된다, 나타낸다, 않는다 ...: syllable before 다 ends in ㄴ (index 4).
-    return final_coda(s) == 4 and not re.search(CAN, s)
 ANAPH = {"이", "이를", "이러한", "이는", "이에", "이처럼", "이때", "이와", "이로", "이로써", "그", "그러므로"}
 CONJ = {"또한", "특히", "그러나", "하지만", "반면", "한편", "따라서", "즉", "예를", "다만", "그리고", "결과적으로"}
 RESULT = r"(보였다|나타났다|알\s*수\s*있|확인할\s*수\s*있|나타낸다|확인하였다|확인했다)"
@@ -151,8 +138,9 @@ def measure(S):
     return {
         "n": len(S),
         "median_len": lens[len(lens) // 2] if lens else 0,
-        "present_pct": round(100 * sum(1 for s in S if is_present(s)) / n, 1),
-        "past_pct": round(100 * sum(1 for s in S if is_past(s)) / n, 1),
+        # Past-form consistency (SKILL.md: 과거형은 "~하였다"로 통일), counted on sentence endings.
+        "past_full": sum(1 for s in S if ending(s).endswith("하였다")),
+        "past_short": sum(1 for s in S if re.search(r"[가-힣]했다$", ending(s))),
         "can_pct": round(100 * can / n, 1),
         "anaphor_pct": round(100 * sum(1 for w in first if w in ANAPH) / n, 1),
         "conj_pct": round(100 * sum(1 for w in first if w in CONJ) / n, 1),
@@ -184,7 +172,7 @@ def main():
     m = measure(sentences(text))
     note = " (60개 미만: 비율 지표는 참고만 함)" if m["n"] < 60 else ""
     f = a.field
-    profile = (f"분야 프로필: {f} = {PROFILES[f]}(근거 논문 5편). 현재형·과거형·물음표는 분야 범위, 나머지는 30편 공통 범위로 판정"
+    profile = (f"분야 프로필: {f} = {PROFILES[f]}(근거 논문 5편). 물음표는 분야 범위, 나머지는 30편 공통 범위로 판정"
                if f else "분야 프로필: 지정 안 함(30편 공통 범위로 판정). 분야를 정하면 --field로 지정")
     lines = [f"# 한국어 연구 논문 문체 점검: {a.draft}", f"문장 {m['n']}개(표·그림·캡션 제외){note}", profile, ""]
     if f:
@@ -210,6 +198,8 @@ def main():
                  f"'N% 높/낮/향상' 문장 {len(m['pct_diff'])}개(%p 또는 상대 개선율 기준 확인)")
     for s in (m["bare_signif"] + m["pct_diff"])[:6]:
         lines.append(f"  - ...{s[-70:]}")
+    lines.append(f"과거형 표기(시제 비율은 판정하지 않음): 문장 끝 '~하였다' {m['past_full']}개, '~했다' {m['past_short']}개"
+                 + (" ('~하였다'로 통일. 기준 논문 30편 모두 '~하였다'를 썼고 25편은 '~했다'가 1개 이하)" if m["past_short"] else ""))
     tr = {k: v for k, v in m["translation"].items() if v}
     lines.append("번역투 표지(기준 논문 30편 합계: 괄호 안 콜론 6, '~에 의해' 82(22편), 'LLM 모델' 32(AI 3편), 나머지 0): "
                  + (", ".join(f"{k} {v}" for k, v in tr.items()) or "없음"))

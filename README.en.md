@@ -52,10 +52,10 @@ cp -r korean-research-paper-writing/plugins/korean-research-paper-writing/skills
 
 - **Field profiles**: section structure (for example, the combined "results and discussion" chapter in chemical engineering and chemistry, or separate simulation and real-data chapters in statistics), sentence conventions, and field medians for six fields: AI, computing other than AI, electronics and electrical engineering, mechanical, chemical, materials, and civil engineering, natural sciences, and data analysis and statistics.
 - **Section moves**: paragraph order, typical sentence frames, and tense for the abstract, introduction, related work, method, results, and conclusion.
-- **Sentence targets**: reference ranges for sentence length, tense, sentence linking, subject, term glossing, result verbs, and LLM-associated words.
+- **Sentence targets**: reference ranges for sentence length, sentence linking, term glossing, result verbs, and LLM-associated words, plus rules for tense and subject. Tense follows what each sentence does (past for your own experiments and observations, present for table descriptions and system behavior), not a target ratio.
 - **Translation table**: eleven English patterns, such as "Our findings:", "The practical rule is simple:", "X helps only when Y", and an aside set off by em dashes, each mapped to a Korean paper frame.
 - **Statistics and experiment frames**: sentences for repeated runs, mean ± standard deviation, 95% confidence intervals, significance tests, null results, interactions, ablations, and preregistered criteria, plus a strength table that matches the verb to the evidence.
-- **Style checker** (`ko_style_check.py`): scores a .tex, .md, or .txt draft on nine metrics, LLM-associated words, translation markers, statistics notation, and em dashes (including LaTeX `---`), and compares each with the reference range. With `--field`, the metrics that differed between fields (present tense, past tense, question marks) are judged against the field range, and every metric shows the field median.
+- **Style checker** (`ko_style_check.py`): scores a .tex, .md, or .txt draft on seven metrics, LLM-associated words, translation markers, statistics notation, past-tense spelling (mixed 하였다 and 했다), and em dashes (including LaTeX `---`), and compares each with the reference range. Tense ratios are not judged. With `--field`, the question-mark rate, which differed between fields, is judged against the field range, and every metric shows the field median.
 
 Every frame cites its source paper. Frames for cases no reference paper covers (paired-seed confidence intervals, preregistered criteria, and so on) are marked as the author's proposals.
 
@@ -124,7 +124,6 @@ python plugins/korean-research-paper-writing/skills/writing-korean-research-pape
 | 지표 | 원고 | 기준 범위 | 판정 | 분야 중앙값 |
 |---|---|---|---|---|
 | 문장 길이 중앙값(자) | 44 | 55~105 | 낮음 | 77 |
-| 현재형 -ㄴ다/-는다 종결(%) [분야] | 48.6 | 25~45 | 높음 | 33.1 |
 | 문두 접속어 또한/특히/그러나/반면(%) | 8.6 | 9~24 | 낮음 | 17.5 |
 | 물음표 문장(/1000문장) [분야] | 57.1 | 0~35 | 높음 | 11.8 |
 ...
@@ -163,9 +162,9 @@ The checker reports in Korean: 낮음 means below the reference range, 높음 me
 
 | | Before | After |
 |---|---|---|
-| Metrics out of range (`--field ai`) | 4 of 9 | 0 of 9 |
+| Metrics out of range (`--field ai`) | 3 of 7 | 0 of 7 |
 | Median sentence length | 53 chars | 69 chars |
-| Past-tense endings | 15.9% | 44.2% |
+| Sentence-initial connectives | 6.9% | 10.9% |
 | Translation markers | 2 | 0 |
 
 ## Reference papers
@@ -182,7 +181,7 @@ The checker reports in Korean: 낮음 means below the reference range, 높음 me
 | Data analysis and statistics | The Korean Journal of Applied Statistics, Journal of Society of Korea Industrial and Systems Engineering, Journal of Korean Society for Quality Management |
 
 - For the five fields other than AI, each journal was read in table-of-contents order from its first 2024 issue, and the first paper meeting the criteria was taken: an original paper reporting experiments, measurements, or data analysis, with open full text, a Korean body, and sufficient length (criteria in [corpus.md](plugins/korean-research-paper-writing/skills/writing-korean-research-papers/reference/corpus.md), section 7).
-- A test across fields found clear field differences only in present-tense endings, past-tense endings, and question marks. The other metrics varied as much within a field as between fields, mostly with the type of paper (method description or measured results).
+- A test across fields found clear field differences only in present-tense endings, past-tense endings, and question marks. The other metrics varied as much within a field as between fields, mostly with the type of paper (method description or measured results). Tense ratios also varied more with the type of paper than with the field (69% present tense in an electrical method paper, 25% in a measurement paper), so the checker does not judge tense by ratio.
 
 **Statistics and experiment frames: 6 papers.** Chosen by statistics-reporting density from the full text of 149 AI papers published in 2024 and 2025 in a flagship journal of the AI field.
 

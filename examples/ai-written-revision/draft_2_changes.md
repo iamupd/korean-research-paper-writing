@@ -1,5 +1,7 @@
 # draft_2_revised 수정 대응표
 
+> 이 기록은 시제 비율(현재형·과거형 종결 %)을 기준 범위로 판정하던 이전 점검기로 작성했습니다. 현재 점검기는 시제 비율을 판정하지 않으며, 시제는 문장의 기능으로 정합니다(SKILL.md 문장 계약).
+
 - 대상: draft_2_ai_written.md(연구 메모로 바로 쓴 원고) → draft_2_revised.md
 - 기준: writing-korean-research-papers 스킬(SKILL.md 문장 계약·장별 구성·담화 표지 대응표, reference/phrasebank.md)
 - 범위: 문체·문장 연결·시제·근거 강도·용어 병기·LLM 연관 어휘·번역투만 고침. 표 1, 표 주, 장·절 제목, 확정 필요 사항은 바꾸지 않음
